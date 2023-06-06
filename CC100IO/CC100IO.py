@@ -35,24 +35,24 @@ def digitalWrite(value, output):
     # A number from 0 to 15 is written to the file
     if output == 1:
         if value:
-            currentValue += 1
+            currentValue = currentValue | 0b0001
         else:
-            currentValue -= 1
+            currentValue = currentValue & 0b1110
     elif output == 2:
         if value:
-            currentValue += 2
+            currentValue = currentValue | 0b0010
         else:
-            currentValue -= 2
+            currentValue = currentValue & 0b1101
     elif output == 3:
         if value:
-            currentValue += 4
+            currentValue = currentValue | 0b0100
         else:
-            currentValue -= 4
+            currentValue = currentValue & 0b1011
     elif output == 4:
         if value:
-            currentValue += 8
+            currentValue = currentValue | 0b1000
         else:
-            currentValue -= 8
+            currentValue = currentValue & 0b0111
     else:
         logging.warning("Output is false")
 
