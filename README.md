@@ -1,8 +1,10 @@
 # CC100IO
+Basic python module to control the input and output ports of a WAGO CC100. Module can be used native on device or in Docker Container.
 
-Basic python module to control the input and output ports of a WAGO CC100. Module can be used native on device or in Docker Container
+**This repository is a development repository that was created as part of a student project and is not regularly maintained. It is neither a stable version nor an official repository of WAGO GmbH & Co. KG.** 
 
 ## Contributors
+- Maik Rehburg <maik.rehburg@wago.com>
 - Konrad Holsmoelle <konrad.holsmoelle@wago.com>
 - Bjarne Zaremba <bjarne.zaremba@wago.com>
 - Tobias Pape <tobias.pape@wago.com>
