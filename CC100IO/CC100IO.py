@@ -305,5 +305,5 @@ if osIsDocker():
     IN_VOLTAGE0_RAW = "/home/ea/anin/48003000.adc:adc@100/iio:device3/in_voltage0_raw"
     IN_VOLTAGE13_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage13_raw"
     IN_VOLTAGE1_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage1_raw"
-    CALIB_DATA = "/home/ea/cal/calib"
+    CALIB_DATA = "/etc/calib"
     OS_VERSION = "/etc/os-release"
