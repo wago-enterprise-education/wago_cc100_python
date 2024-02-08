@@ -1,19 +1,18 @@
-#Authors
-#Konrad Holsmoelle <konrad.holsmoelle@wago.com>
-#Bjarne Zaremba <bjarne.zaremba@wago.com>
-#Tobias Pape <tobias.pape@wago.com>
-#Tobias Schaekel <tobias.schaekel@wago.com>
-#Mattis Schrade <mattis.schrade@wago.com>
-#Bekim Imrihor <bekim.imrihor@wago.com>
-#Nele Stocksmeyer <nele.stocksmeyer@wago.com>
-#Sascha Hahn <sascha.hahn@wago.com> 
-#Danny Meihoefer <danny.meihoefer@wago.com>
-#Write inputs an outputs with https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
+# Authors
+# Maik Rehburg <maik.rehburg@wago.com>
+# Konrad Holsmoelle <konrad.holsmoelle@wago.com>
+# Bjarne Zaremba <bjarne.zaremba@wago.com>
+# Tobias Pape <tobias.pape@wago.com>
+# Tobias Schaekel <tobias.schaekel@wago.com>
+# Mattis Schrade <mattis.schrade@wago.com>
+# Bekim Imrihor <bekim.imrihor@wago.com>
+# Nele Stocksmeyer <nele.stocksmeyer@wago.com>
+# Sascha Hahn <sascha.hahn@wago.com> 
+# Danny Meihoefer <danny.meihoefer@wago.com>
+# Write inputs an outputs with https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
 
 import time
 import logging
-
-
 
 
 #Function to read an write the inputs and outputs
@@ -191,7 +190,40 @@ def tempRead(input):
 
     # Calibrates the value and returns it
     return(calibrateTemp(voltage, input))
+
+def serialReadLine():
+    """
+    Reads incoming message on RS485 Port till eol
+    """
+    data = ""
+    with open(SERIAL_PORT) as ser:
+        data = ser.readline()
+    return data
     
+
+def serialReadBytes(n):
+    """
+    n: number of bytes to read
+    Reads n incoming bytes on RS485 Port 
+    """
+    data = ""
+    with open(SERIAL_PORT, "r") as ser:
+        data = ser.read(n)
+    return data
+
+
+def serialWrite(message):
+    """
+    message: String to write
+    Write message to RS485 serial interface
+    returns number of written bytes  
+    """
+    written = -1
+    with open(SERIAL_PORT, "w") as ser:
+        written = ser.write(message)
+    return written
+
+
 # Output calibration from: https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
 def readCalibriationData():
     """
@@ -293,6 +325,7 @@ IN_VOLTAGE13_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage13_raw"
 IN_VOLTAGE1_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage1_raw"
 CALIB_DATA = "/etc/calib"
 OS_VERSION = "/etc/os-release"
+SERIAL_PORT = "/dev/ttySTM1"
 if osIsDocker():
     #data paths on the Docker-Container
     DOUT_DATA = "/home/ea/dout/DOUT_DATA"
@@ -305,5 +338,5 @@ if osIsDocker():
     IN_VOLTAGE0_RAW = "/home/ea/anin/48003000.adc:adc@100/iio:device3/in_voltage0_raw"
     IN_VOLTAGE13_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage13_raw"
     IN_VOLTAGE1_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage1_raw"
-    CALIB_DATA = "/etc/calib"
+    CALIB_DATA = "/home/ea/cal/calib"
     OS_VERSION = "/etc/os-release"

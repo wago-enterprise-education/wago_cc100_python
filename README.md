@@ -1,5 +1,5 @@
 # CC100IO
-Basic python module to control the input and output ports of a WAGO CC100. Module can be used native on device or in Docker Container.
+Basic python module to control the input and output ports of a WAGO CC100 (751-9301). Module can be used native on WAGO CC100 or in Docker Container running on WAGO CC100.
 
 **This repository is a development repository that was created as part of a student project and is not regularly maintained. It is neither a stable version nor an official repository of WAGO GmbH & Co. KG.** 
 
@@ -16,7 +16,8 @@ Basic python module to control the input and output ports of a WAGO CC100. Modul
 - Danny Meihoefer <danny.meihoefer@wago.com>
 
 ## Prerequisites
-- Python >= 3.7
+- Firmware Version >= 21(03.09.04)
+- Python >= 3.7 on WAGO CC100
 
 ## Installation
 ```bash
@@ -66,3 +67,15 @@ def armHoch():
 * #### ```tempRead (input)``` :
   *  input: PT input to be switched ("PT1" or "PT2")
   *  Function reads the input and returns the calibrated value in °C as an Integer.
+* #### ```serialReadLine()```:
+  *  Reads incoming message on RS485 Port till eol
+* #### ```serialReadBytes(n)```:
+  *  n: number of bytes to read
+  *  Reads n incoming message on RS485 Port 
+* #### ```serialWrite(message)```:
+  *  message: String to write
+  *  Write message to RS485 serial interface
+  *  returns number of written bytes
+
+## Examples
+Examples can be found in directory [*sample-scripts*](/sample_scripts)
