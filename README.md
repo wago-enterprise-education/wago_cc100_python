@@ -29,23 +29,23 @@ pip install CC100IO
 import CC100IO
 def armHoch():
 
-    CC100IO.digitalWrite(True, 3)
+    CC100IO.digitalWrite(3, True)
     if CC100IO.digitalReadWait(4, False):
-        CC100IO.digitalWrite(False, 3)
+        CC100IO.digitalWrite(3, False)
         return True
 ```
 
 ## Description of functions
 
-* #### ```digitalWrite (value, output)``` :
-  * value: Value which the selected output should be set to (True or False)
+* #### ```digitalWrite (output, value)``` :
   * output: Digital output to be switched (1-4)
+  * value: Value which the selected output should be set to (True or False)
   * Function switches the output to the specified value.
   * Function does not check the current value of the output.
   * Function returns True if value is written, returns False if an error occured. 
-* #### ```analogWrite (voltage, output)``` : 
-  * voltage: Voltage which the selected output should be set to (0 - 10000 mV)
+* #### ```analogWrite (output, voltage)``` : 
   * output: Analog output to be switched(1 or 2)
+  * voltage: Voltage which the selected output should be set to (0 - 10000 mV)
   * Function switches the output to the specified voltage. 
   * Function does not check the current value of the output. 
   * Function returns True if value is written, returns False if an error occured. 

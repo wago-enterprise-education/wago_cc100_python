@@ -16,10 +16,10 @@ import logging
 
 
 #Function to read an write the inputs and outputs
-def digitalWrite(value, output):
+def digitalWrite(output, value):
     """
-    value: Value which the selected output should be set to
     output: Digital output to be switched
+    value: Value which the selected output should be set to
     Function switches the output to the specified value.
     Function does not check the current value of the output
     Function returns True if value is written, returns False if an error occured
@@ -63,10 +63,10 @@ def digitalWrite(value, output):
     return True
 
 
-def analogWrite(voltage, output):
+def analogWrite(output, voltage):
     """
-    voltage: Voltage which the selected output should be set to
     output: Analog output to be switched
+    voltage: Voltage which the selected output should be set to
     Function switches the output to the specified voltage
     Function does not check the current value of the output
     Function returns True if value is written, returns False if an error occured
