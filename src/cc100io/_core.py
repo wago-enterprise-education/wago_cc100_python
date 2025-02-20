@@ -1,14 +1,5 @@
-# Authors
-# Maik Rehburg <maik.rehburg@wago.com>
-# Konrad Holsmoelle <konrad.holsmoelle@wago.com>
-# Bjarne Zaremba <bjarne.zaremba@wago.com>
-# Tobias Pape <tobias.pape@wago.com>
-# Tobias Schaekel <tobias.schaekel@wago.com>
-# Mattis Schrade <mattis.schrade@wago.com>
-# Bekim Imrihor <bekim.imrihor@wago.com>
-# Nele Stocksmeyer <nele.stocksmeyer@wago.com>
-# Sascha Hahn <sascha.hahn@wago.com> 
-# Danny Meihoefer <danny.meihoefer@wago.com>
+# -*- coding: utf-8 -*-
+
 # Write inputs an outputs with https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
 
 import time
@@ -303,14 +294,17 @@ def calibrateTemp(iValue, iInput):
 
 def osIsDocker():
     '''Returns True if the method is run by CC100Interface-Docker'''
-    os_data = open(OS_VERSION, "r")
-    lines = os_data.readlines()
-    for line in lines:
-        if line.strip('\n') == 'NAME="Ubuntu"':
-            os_data.close()
-            return True
-    os_data.close()        
-    return False
+    try:
+        os_data = open(OS_VERSION, "r")
+        lines = os_data.readlines()
+        for line in lines:
+            if line.strip('\n') == 'NAME="Ubuntu"':
+                os_data.close()
+                return True
+        os_data.close()        
+        return False
+    except:
+        return False
     
 #data paths on CC100
 DOUT_DATA = "/sys/kernel/dout_drv/DOUT_DATA"

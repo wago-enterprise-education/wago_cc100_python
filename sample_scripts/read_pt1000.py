@@ -1,6 +1,6 @@
-import CC100IO
+import cc100io
 
 while True:
-    temp_in = CC100IO.tempRead("PT1")
+    temp_in = cc100io.tempRead("PT1")
     print(f"Temperatur 1: {temp_in}")
-    CC100IO.delay(1000)
+    cc100io.delay(1000)

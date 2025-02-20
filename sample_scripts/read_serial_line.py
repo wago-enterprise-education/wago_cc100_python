@@ -1,4 +1,4 @@
-import CC100IO
+import cc100io
 
-serial_in = CC100IO.serialReadLine()
+serial_in = cc100io.serialReadLine()
 print(serial_in)

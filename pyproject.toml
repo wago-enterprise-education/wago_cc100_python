@@ -1,0 +1,56 @@
+[project]
+name = "cc100io"
+version = "1.1.0"
+description = "Basic python module to control the input and output ports of a WAGO CC100 controller"
+keywords = ["WAGO", "CC100", "IO"]
+readme = "README.md"
+license = { file = "LICENSE.md" }
+authors = [
+    { name = "Maik Rehburg", email = "maik.rehburg@wago.com" },
+    { name = "Andre Alexander Bell", email = "andre.bell@wago.com" },
+    { name = "Konrad Holsmoelle" },
+    { name = "Bjarne Zaremba" },
+    { name = "Tobias Pape" },
+    { name = "Tobias Schaekel" },
+    { name = "Mattis Schrade" },
+    { name = "Bekim Imrihor" },
+    { name = "Nele Stocksmeyer" },
+    { name = "Sascha Hahn" },
+    { name = "Danny Meihoefer" }
+]
+maintainers = [
+    { name = "Maik Rehburg", email = "maik.rehburg@wago.com" },
+    { name = "Andre Alexander Bell", email = "andre.bell@wago.com" }
+]
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Developers',
+    'Topic :: Software Development :: Build Tools',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+]
+requires-python = ">=3.7"
+dependencies = []
+
+[project.urls]
+homepage = "https://github.com/wago-enterprise-education/wago_cc100_python"
+download = "https://github.com/wago-enterprise-education/wago_cc100_python/releases"
+repository = "https://github.com/wago-enterprise-education/wago_cc100_python.git"
+issues = "https://github.com/wago-enterprise-education/wago_cc100_python/issues"
+changelog = "https://github.com/wago-enterprise-education/wago_cc100_python/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

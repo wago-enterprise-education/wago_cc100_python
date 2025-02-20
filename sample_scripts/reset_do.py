@@ -1,5 +1,5 @@
-import CC100IO
+import cc100io
 
 state = False
 for output in range(1,5):
-    CC100IO.digitalWrite(output, state)
+    cc100io.digitalWrite(output, state)
