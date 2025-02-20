@@ -1,4 +1,4 @@
-# cc100io
+# WAGO CC100 Python IO Package
 
 Basic python module to control the input and output ports of a WAGO CC100 (751-9301). Module can be used native on WAGO CC100 or in Docker Container running on WAGO CC100.
 
