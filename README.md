@@ -8,16 +8,16 @@ Basic python module to control the input and output ports of a WAGO CC100 (751-9
 ## Contributors
 
 - Maik Rehburg <maik.rehburg@wago.com>
-- Konrad Holsmoelle <konrad.holsmoelle@wago.com>
-- Bjarne Zaremba <bjarne.zaremba@wago.com>
-- Tobias Pape <tobias.pape@wago.com>
-- Tobias Schaekel <tobias.schaekel@wago.com>
-- Mattis Schrade <mattis.schrade@wago.com>
-- Bekim Imrihor <bekim.imrihor@wago.com>
-- Nele Stocksmeyer <nele.stocksmeyer@wago.com>
-- Sascha Hahn <sascha.hahn@wago.com>
-- Danny Meihoefer <danny.meihoefer@wago.com>
-- Andre Bell <andre.bell@wago.com>
+- André Alexander Bell <andre.bell@wago.com>
+- Konrad Holsmölle
+- Bjarne Zaremba
+- Tobias Pape
+- Tobias Schäkel
+- Mattis Schrade
+- Bekim Imrihor
+- Nele Stocksmeyer
+- Sascha Hahn
+- Danny Meihöfer
 
 ## Prerequisites
 
