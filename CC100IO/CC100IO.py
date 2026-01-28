@@ -21,30 +21,16 @@ def digitalWrite(output, value):
     file.close()
 
     # Addition or rather subtraction to the current state to switch the corresponding output
-    # Least Significant Bit corresponds to digital output 1, the 4th bit corresponds to output 8
+    # Least Significant Bit corresponds to digital output 1, the 4th bit corresponds to output 4
     # A number from 0 to 15 is written to the file
-    if output == 1:
+    if output in range(1, 5):
+        mask = (1 << (output - 1))
         if value:
-            currentValue = currentValue | 0b0001
+            currentValue = currentValue | mask
         else:
-            currentValue = currentValue & 0b1110
-    elif output == 2:
-        if value:
-            currentValue = currentValue | 0b0010
-        else:
-            currentValue = currentValue & 0b1101
-    elif output == 3:
-        if value:
-            currentValue = currentValue | 0b0100
-        else:
-            currentValue = currentValue & 0b1011
-    elif output == 4:
-        if value:
-            currentValue = currentValue | 0b1000
-        else:
-            currentValue = currentValue & 0b0111
+            currentValue = currentValue & ~mask
     else:
-        logging.warning("Output is false")
+        logging.warning("Output does not exist")
 
     # Writes the calculated value for the new configuration to the file on the CC100
     file = open(DOUT_DATA, "w")
