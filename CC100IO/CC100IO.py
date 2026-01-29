@@ -1,14 +1,5 @@
-# Authors
-# Maik Rehburg <maik.rehburg@wago.com>
-# Konrad Holsmoelle <konrad.holsmoelle@wago.com>
-# Bjarne Zaremba <bjarne.zaremba@wago.com>
-# Tobias Pape <tobias.pape@wago.com>
-# Tobias Schaekel <tobias.schaekel@wago.com>
-# Mattis Schrade <mattis.schrade@wago.com>
-# Bekim Imrihor <bekim.imrihor@wago.com>
-# Nele Stocksmeyer <nele.stocksmeyer@wago.com>
-# Sascha Hahn <sascha.hahn@wago.com> 
-# Danny Meihoefer <danny.meihoefer@wago.com>
+# -*- coding: utf-8 -*-
+
 # Write inputs an outputs with https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
 
 import time
