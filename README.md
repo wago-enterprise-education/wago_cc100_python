@@ -24,6 +24,12 @@ Basic python module to control the input and output ports of a WAGO CC100 (751-9
 - Firmware Version >= 21(03.09.04)
 - Python >= 3.7 on WAGO CC100
 
+# Supported Devices
+
+| Platform | Device    |
+|----------|-----------|
+| CC100    | 751-9301  |
+
 ## Installation
 
 ```bash
