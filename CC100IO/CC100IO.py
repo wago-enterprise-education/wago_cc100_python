@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 
-# Write inputs an outputs with https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
+"""
+Access onboard I/O of the 751-9301 CC100 controller.
+
+Technical details at https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
+"""
 
 import time
 import logging
 
 
-#Function to read an write the inputs and outputs
 def digitalWrite(output, value):
-    """
+    """Switch the output to the specified value.
+
     output: Digital output to be switched
     value: Value which the selected output should be set to
-    Function switches the output to the specified value.
-    Function does not check the current value of the output
-    Function returns True if value is written, returns False if an error occured
+    Return True if value is written, False if an error occured
     """
-    # Reading the outputs current state to calculate the new value in the file
+    # Read the current state to calculate the new value in the file
     file = open(DOUT_DATA, "r")
     currentValue = int(file.read())
     file.close()
@@ -36,24 +38,22 @@ def digitalWrite(output, value):
     file = open(DOUT_DATA, "w")
     file.write(str(currentValue))
     file.close()
-    # Returns True after completion
+
     return True
 
 
 def analogWrite(output, voltage):
-    """
+    """Switch the output to the specified voltage.
+    
     output: Analog output to be switched
     voltage: Voltage which the selected output should be set to
-    Function switches the output to the specified voltage
-    Function does not check the current value of the output
-    Function returns True if value is written, returns False if an error occured
     """
     if (voltage>0 and voltage <10000):
         voltage = calibrateOut(voltage, output)
     if voltage < 0:
         voltage = 0
 
-        # Activates the analog outputs on the CC100
+    # Activate the analog outputs on the CC100
     file = open(OUT_VOLTAGE1_POWERDOWN, "w")
     file.write("0")
     file.close()
@@ -62,7 +62,7 @@ def analogWrite(output, voltage):
     file.write("0")
     file.close()
 
-    # Writes the voltage, taken from the calibration for the corresponding output,
+    # Write the voltage, taken from the calibration for the corresponding output,
     # for the voltage to the file for the output
     # When turning off, zero is written to the file
     if output == 1:
@@ -75,30 +75,27 @@ def analogWrite(output, voltage):
         file.write(str(voltage))
         file.close()
         
-    # Returns True after completion
     return True
 
 def digitalRead(input):
-    """
+    """Read the specified digital input and return the value as boolean.
+
     input: Digital input to be read
-    Function reads the input
-    Function does not check the current value of the output
-    Returns True or False depending on the value
     """
 
-    # Reads the state of the digital inputs on the CC100
+    # Read the state of the digital inputs on the CC100
     datei = open (DIN, "r")
     value = datei.readline()
     datei.close()
 
-    # Formats the current state into an 8-digit binary code
+    # Format the current state into an 8-digit binary code
     value = int(value)
     value0B = format(value, "08b")
 
-    # Calculates the position of the bit from the desired input
+    # Calculate the position of the bit from the desired input
     inputBit = 8 - input
 
-    # Returns the value of the state of the desired input
+    # Return the value of the state of the desired input
     # Note: Last index(read from left to right) ist the Least Significant Bit.
     if int(value0B[inputBit]) == 1:
         return True
@@ -106,22 +103,20 @@ def digitalRead(input):
         return False
 
 def digitalReadWait(input, value):
-    """
+    """Read specified input until desired state is reached, then return True.
+
     input: Digital input to be checked
     value: State to be queried at the input
-    Reads the specified input until the desired state is reached,
-    by another Function or external factors and then returns True
-    Function runs until the state is reached.
     """
 
-    # Converts the given bool into a number
+    # Convert the given bool into a number
     if value:
         value = 1
     else:
         value = 0
 
-    # Checks the input as long as it reaches the given state
-    # Then ends the loop and returns True
+    # Check the input as long as it reaches the given state
+    # Then end the loop and return True
     loop_condition = True
     while loop_condition:
         if digitalRead(input) == value:
@@ -129,12 +124,12 @@ def digitalReadWait(input, value):
             return True
 
 def analogRead(input):
-    """
-    input: Analog input to be switched
-    Function reads the input and returns the calibrated value in mV as an Integer.
+    """Read analog input and return calibrated value in mV.
+
+    input: Analog input to be read
     """
 
-    # Reads the state of the analog input on the CC100
+    # Read the state of the analog input on the CC100
     if input == 1:
         path=IN_VOLTAGE3_RAW
     elif input == 2:
@@ -151,9 +146,9 @@ def delay(iTime):
     time.sleep(iTime)
 
 def tempRead(input):
-    """
-    input: PT input to be switched
-    Function reads the input and returns the calibrated value in °C as an Integer.
+    """Read PT input and return calibrated value in °C.
+
+    input: PT input to be read
     """
     
     if input == "PT1":
@@ -165,13 +160,11 @@ def tempRead(input):
     voltage = int(file.readline())
     file.close()
 
-    # Calibrates the value and returns it
+    # Calibrate the value and returns it
     return(calibrateTemp(voltage, input))
 
 def serialReadLine():
-    """
-    Reads incoming message on RS485 Port till eol
-    """
+    """Read incoming message on RS485 Port till eol and return data."""
     data = ""
     with open(SERIAL_PORT) as ser:
         data = ser.readline()
@@ -179,9 +172,9 @@ def serialReadLine():
     
 
 def serialReadBytes(n):
-    """
+    """Read a specified number of bytes in RS485 port and return data.
+
     n: number of bytes to read
-    Reads n incoming bytes on RS485 Port 
     """
     data = ""
     with open(SERIAL_PORT, "r") as ser:
@@ -190,10 +183,9 @@ def serialReadBytes(n):
 
 
 def serialWrite(message):
-    """
+    """Write message to RS485 serial interface and return number of written bytes.
+
     message: String to write
-    Write message to RS485 serial interface
-    returns number of written bytes  
     """
     written = -1
     with open(SERIAL_PORT, "w") as ser:
@@ -203,9 +195,7 @@ def serialWrite(message):
 
 # Output calibration from: https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
 def readCalibriationData():
-    """
-    Reads out the data of the calibrationdata from the CC100
-    """
+    """Read out calibration data from the CC100 and save it in global variable calib_data."""
     global calib_data
     filename="/home/ea/cal/calib"
     
@@ -215,15 +205,11 @@ def readCalibriationData():
     file.close()
 
 def getCalibrationData(value):
-    """
-    Returns the calibrationdata for the required row of the table
-    """
+    """Return the calibration data for the required row of the table."""
     return calib_data[value].rstrip().split(' ', 4)
 
 def calcCalibrate(val_uncal, calib):
-    """
-    Calculates the value of the voltage for the required output
-    """
+    """Calculate the value of the voltage for the required output."""
     x1=int(calib[0])
     y1=int(calib[1])
     x2=int(calib[2])
@@ -236,24 +222,24 @@ def calcCalibrate(val_uncal, calib):
     return int(val_cal)
 
 def calibrateOut(iVoltage, iOutput):
-    """
-    iVoltage: Voltage to be applied to the input
+    """Calibrate and return voltage to be applied to analog output.
+    
+    iVoltage: Voltage to be applied to the output.
     iOutput: Output which should be switched
-
-    Returns the value which is to be written with the specified voltage
     """
     
     readCalibriationData()
-    # Takes a different set of calibration data depending on the output
+    # Take a different set of calibration data depending on the output
     if iOutput == 1:
         cal_ao = getCalibrationData(4)
     elif iOutput == 2:
         cal_ao = getCalibrationData(5)
-    # Calculates and returns the value
+    # Calculate and return the value
     return calcCalibrate(iVoltage, cal_ao)
 
 def calibrateIn(iValue, iInput):
-    """
+    """Convert value read at analog input to mV and return it.
+
     iValue: Value given for the file from the output
     iInput: Input at which the value was read
     """
@@ -262,11 +248,12 @@ def calibrateIn(iValue, iInput):
         cal_ai = getCalibrationData(2)
     if iInput == 2:
         cal_ai = getCalibrationData(3)
-    #Returns the calculated value 
+    #Return the calculated value 
     return calcCalibrate(iValue, cal_ai)
 
 def calibrateTemp(iValue, iInput):
-    """
+    """Calibrate and return temperature read at PT input in °C.
+
     iValue: Value given for the file from the output
     iInput: Input at which the value was read
     """
@@ -275,11 +262,11 @@ def calibrateTemp(iValue, iInput):
         cal_Temp = getCalibrationData(0)
     if iInput == "PT2":
         cal_Temp = getCalibrationData(1)
-    #Returns the calculated value in °C
+    #Return the calculated value in °C
     return (calcCalibrate(iValue, cal_Temp)-1000)/(3.91)
 
 def osIsDocker():
-    '''Returns True if the method is run by CC100Interface-Docker'''
+    """Return True if the method is run by CC100Interface-Docker"""
     os_data = open(OS_VERSION, "r")
     lines = os_data.readlines()
     for line in lines:
@@ -289,7 +276,7 @@ def osIsDocker():
     os_data.close()        
     return False
     
-#data paths on CC100
+# data paths on CC100
 DOUT_DATA = "/sys/kernel/dout_drv/DOUT_DATA"
 OUT_VOLTAGE1_POWERDOWN = "/sys/bus/iio/devices/iio:device0/out_voltage1_powerdown"
 OUT_VOLTAGE2_POWERDOWN = "/sys/bus/iio/devices/iio:device1/out_voltage2_powerdown"
@@ -304,7 +291,7 @@ CALIB_DATA = "/etc/calib"
 OS_VERSION = "/etc/os-release"
 SERIAL_PORT = "/dev/ttySTM1"
 if osIsDocker():
-    #data paths on the Docker-Container
+    # data paths on the docker container
     DOUT_DATA = "/home/ea/dout/DOUT_DATA"
     OUT_VOLTAGE1_POWERDOWN = "/home/ea/anout/40017000.dac:dac@1/iio:device0/out_voltage1_powerdown"
     OUT_VOLTAGE2_POWERDOWN = "/home/ea/anout/40017000.dac:dac@2/iio:device1/out_voltage2_powerdown"
