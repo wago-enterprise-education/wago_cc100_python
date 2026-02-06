@@ -194,22 +194,26 @@ def serialWrite(message):
 
 
 # Output calibration from: https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
-def readCalibriationData():
+def readCalibrationData():
     """Read out calibration data from the CC100 and save it in global variable calib_data."""
     global calib_data
-    filename="/home/ea/cal/calib"
-    
     file = open(CALIB_DATA, "r")
-    
     calib_data = file.readlines()[1:]    
     file.close()
 
 def getCalibrationData(value):
-    """Return the calibration data for the required row of the table."""
+    """Return the calibration data for the required row of the table.
+
+    value: the row to read
+    """
     return calib_data[value].rstrip().split(' ', 4)
 
 def calcCalibrate(val_uncal, calib):
-    """Calculate the value of the voltage for the required output."""
+    """Calculate the value of the voltage for the required output.
+
+    val_uncal: uncalibrated value
+    calib: calibration data
+    """
     x1=int(calib[0])
     y1=int(calib[1])
     x2=int(calib[2])
@@ -221,49 +225,49 @@ def calcCalibrate(val_uncal, calib):
 
     return int(val_cal)
 
-def calibrateOut(iVoltage, iOutput):
+def calibrateOut(voltage, output):
     """Calibrate and return voltage to be applied to analog output.
     
-    iVoltage: Voltage to be applied to the output.
-    iOutput: Output which should be switched
+    voltage: Voltage to be applied to the output.
+    output: Output which should be switched
     """
     
-    readCalibriationData()
+    readCalibrationData()
     # Take a different set of calibration data depending on the output
-    if iOutput == 1:
+    if output == 1:
         cal_ao = getCalibrationData(4)
-    elif iOutput == 2:
+    elif output == 2:
         cal_ao = getCalibrationData(5)
     # Calculate and return the value
-    return calcCalibrate(iVoltage, cal_ao)
+    return calcCalibrate(voltage, cal_ao)
 
-def calibrateIn(iValue, iInput):
+def calibrateIn(value, input):
     """Convert value read at analog input to mV and return it.
 
-    iValue: Value given for the file from the output
-    iInput: Input at which the value was read
+    value: Value given for the file from the output
+    input: Input at which the value was read
     """
-    readCalibriationData()
-    if iInput == 1:
+    readCalibrationData()
+    if input == 1:
         cal_ai = getCalibrationData(2)
-    if iInput == 2:
+    if input == 2:
         cal_ai = getCalibrationData(3)
     #Return the calculated value 
-    return calcCalibrate(iValue, cal_ai)
+    return calcCalibrate(value, cal_ai)
 
-def calibrateTemp(iValue, iInput):
+def calibrateTemp(value, input):
     """Calibrate and return temperature read at PT input in °C.
 
-    iValue: Value given for the file from the output
-    iInput: Input at which the value was read
+    value: Value given for the file from the output
+    input: Input at which the value was read
     """
-    readCalibriationData()
-    if iInput == "PT1":
+    readCalibrationData()
+    if input == "PT1":
         cal_Temp = getCalibrationData(0)
-    if iInput == "PT2":
+    if input == "PT2":
         cal_Temp = getCalibrationData(1)
     #Return the calculated value in °C
-    return (calcCalibrate(iValue, cal_Temp)-1000)/(3.91)
+    return (calcCalibrate(value, cal_Temp)-1000)/(3.91)
 
 def osIsDocker():
     """Return True if the method is run by CC100Interface-Docker"""
