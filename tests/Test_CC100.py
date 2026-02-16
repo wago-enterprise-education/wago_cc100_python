@@ -1,6 +1,13 @@
+import unittest
+
 import CC100IO as cc
 
-class TestCC100():
+class TestCC100(unittest.TestCase):
+    def test_non_existing_output(self):
+        with self.assertLogs(level="WARNING") as cm:
+            cc.digitalWrite(5)
+        self.assertEqual(cm.output, ["WARNING:CC100IO:Output does not exist"])
+
     def TestDigitalWrite():
         for i in range(1, 9):
             for j in range(2):

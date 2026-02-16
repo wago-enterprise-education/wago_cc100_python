@@ -9,6 +9,7 @@ Technical details at https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access
 import time
 import logging
 
+logger = logging.getLogger(__name__)
 
 def digitalWrite(output, value):
     """Switch the output to the specified value.
@@ -32,7 +33,7 @@ def digitalWrite(output, value):
         else:
             currentValue = currentValue & ~mask
     else:
-        logging.warning("Output does not exist")
+        logger.warning("Output does not exist")
 
     # Writes the calculated value for the new configuration to the file on the CC100
     file = open(DOUT_DATA, "w")
