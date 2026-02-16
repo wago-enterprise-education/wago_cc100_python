@@ -108,20 +108,14 @@ def digitalReadWait(input, value):
     input: Digital input to be checked
     value: State to be queried at the input
     """
-
-    # Convert the given bool into a number
-    if value:
-        value = 1
-    else:
-        value = 0
+    value = int(value)
 
     # Check the input as long as it reaches the given state
     # Then end the loop and return True
-    loop_condition = True
-    while loop_condition:
+    while True:
         if digitalRead(input) == value:
-            loop_condition = False
-            return True
+            break
+    return True
 
 def analogRead(input):
     """Read analog input and return calibrated value in mV.
