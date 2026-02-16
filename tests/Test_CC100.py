@@ -2,43 +2,43 @@ import CC100IO as cc
 import unittest
 
 class test_cc100(unittest.TestCase):
-    def TestDigitalWrite(self):
+    def test_digital_write(self):
         for i in range(1, 9):
             for j in range(2):
                 cc.digitalWrite(i,j)
             
-    def TestDigitalRead(self):
+    def tet_digital_read(self):
         for i in range(1,9):
             cc.digitalRead(i)
             
-    def TestAnalogWrite(self):
+    def test_analog_write(self):
         for i in range(1,2):
             for j in range(0,10001,1000):
                 cc.analogWrite(i,j)
 
-    def TestAnalogRead(self):
+    def test_analog_read(self):
         for i in range(1,2):
             cc.analogRead(i)
         
-    def TestDelay(self):
+    def test_delay(self):
         pass
     
-    def TestTempRead(self):
+    def test_temp_read(self):
         pass
 
     def TestSerialReadLine(self):
         pass
 
-    def TestSerialReadBytes(self):
+    def test_serial_read_bytes(self):
         pass
 
-    def TestSerialWrite(self):
+    def test_serial_write(self):
         pass
 
-    def TestReadCalibarationData(self):
+    def test_read_calibration_data(self):
         pass
 
-    def TestgetCalibartionData(self):
+    def test_get_calibration_data(self):
         pass
 
     def TestgetCalcCalibrate(self):
