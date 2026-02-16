@@ -1,13 +1,20 @@
+import unittest
+
 import CC100IO as cc
 import unittest
 
-class test_cc100(unittest.TestCase):
+class Test_cc100(unittest.TestCase):
+    def test_non_existing_output(self):
+        with self.assertLogs(level="WARNING") as cm:
+            cc.digitalWrite(5)
+        self.assertEqual(cm.output, ["WARNING:CC100IO:Output does not exist"])
+
     def test_digital_write(self):
         for i in range(1, 9):
             for j in range(2):
                 cc.digitalWrite(i,j)
             
-    def tet_digital_read(self):
+    def test_digital_read(self):
         for i in range(1,9):
             cc.digitalRead(i)
             
