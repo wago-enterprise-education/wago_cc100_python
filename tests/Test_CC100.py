@@ -1,59 +1,61 @@
 import CC100IO as cc
+import unittest
 
-class TestCC100():
-    def TestDigitalWrite():
+class test_cc100(unittest.TestCase):
+    def TestDigitalWrite(self):
         for i in range(1, 9):
             for j in range(2):
                 cc.digitalWrite(i,j)
-
-    def TestDigitalRead():
+            
+    def TestDigitalRead(self):
         for i in range(1,9):
             cc.digitalRead(i)
-
-    def TestAnalogWrite():
+            
+    def TestAnalogWrite(self):
         for i in range(1,2):
             for j in range(0,10001,1000):
                 cc.analogWrite(i,j)
 
-    def TestAnalogRead():
+    def TestAnalogRead(self):
         for i in range(1,2):
             cc.analogRead(i)
         
-    def TestDelay():
+    def TestDelay(self):
         pass
     
-    def TestTempRead():
+    def TestTempRead(self):
         pass
 
-    def TestSerialReadLine():
+    def TestSerialReadLine(self):
         pass
 
-    def TestSerialReadBytes():
+    def TestSerialReadBytes(self):
         pass
 
-    def TestSerialWrite():
+    def TestSerialWrite(self):
         pass
 
-    def TestReadCalibarationData():
+    def TestReadCalibarationData(self):
         pass
 
-    def TestgetCalibartionData():
+    def TestgetCalibartionData(self):
         pass
 
-    def TestgetCalcCalibrate():
+    def TestgetCalcCalibrate(self):
         pass
 
-    def TestCalibrateOut():
+    def TestCalibrateOut(self):
         pass
 
-    def TestReadCalibrationData():
+    def TestReadCalibrationData(self):
         pass
 
-    def TestCalibrateIn():
+    def TestCalibrateIn(self):
         pass
 
-    def TestCalibrateTemp():
+    def TestCalibrateTemp(self):
         pass
 
-    def TestIsDocker():
+    def TestIsDocker(self):
         pass
+
