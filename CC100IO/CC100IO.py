@@ -50,7 +50,7 @@ def analogWrite(output, voltage):
     output: Analog output to be switched
     voltage: Voltage which the selected output should be set to
     """
-    if (voltage>0 and voltage <10000):
+    if (voltage>0 and voltage <10001):
         voltage = calibrateOut(voltage, output)
     if voltage < 0:
         voltage = 0
@@ -76,7 +76,9 @@ def analogWrite(output, voltage):
         file=open(OUT_VOLTAGE2_RAW, "w")
         file.write(str(voltage))
         file.close()
-        
+
+    else: logger.warning("Output does not exist")    
+    
     return True
 
 def digitalRead(input):

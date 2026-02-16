@@ -31,6 +31,7 @@ class Test_751_9301(fake_filesystem_unittest.TestCase):
     def test_non_existing_output(self):
         with self.assertLogs(level="WARNING") as cm:
             cc.digitalWrite(5, True)
+            cc.analogWrite(3,1000)
         self.assertEqual(cm.output, ["WARNING:CC100IO.CC100IO:Output does not exist"])
 
     def test_digital_write(self):
@@ -41,28 +42,18 @@ class Test_751_9301(fake_filesystem_unittest.TestCase):
     def test_non_existing_input(self):
         with self.assertLogs(level="WARNING") as cm:
                 cc.digitalRead(9)
+                cc.analogRead(3)
         self.assertEqual(cm.output, ["WARNING:CC100IO:Input does not exist"])
               
     def test_digital_read(self):
         for i in range(1,9):
             cc.digitalRead(i)
-            
-    def test_non_existing_analog_output(self):
-        with self.assertLogs(level="WARNING") as cm:
-            cc.analogWrite(3)
-        self.assertEqual(cm.output,["WARNING:CC100IO:Output does not exist"])
-
 
     def test_analog_write(self):
         for i in range(1,2):
             for j in range(0,10001,1000):
                 cc.analogWrite(i,j)
         
-    def test_non_existing_analog_input(self):
-        with self.assertLogs(level="WARNING") as cm:
-            cc.analogRead(3)
-        self.assertEqual(cm.output,["WARNING:CC100IO:Input does not exist"])
-
     def test_analog_read(self):
         for i in range(1,2):
             cc.analogRead(i)
