@@ -6,8 +6,9 @@ Access onboard I/O of the 751-9301 CC100 controller.
 Technical details at https://github.com/WAGO/cc100-howtos/blob/main/HowTo_Access_Onboard_IO/accessIO_CC100.py
 """
 
-import time
 import logging
+import os
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -266,13 +267,14 @@ def calibrateTemp(value, input):
 
 def osIsDocker():
     """Return True if the method is run by CC100Interface-Docker"""
-    os_data = open(OS_VERSION, "r")
-    lines = os_data.readlines()
-    for line in lines:
-        if line.strip('\n') == 'NAME="Ubuntu"':
-            os_data.close()
-            return True
-    os_data.close()        
+    if os.path.exists(OS_VERSION):
+        os_data = open(OS_VERSION, "r")
+        lines = os_data.readlines()
+        for line in lines:
+            if line.strip('\n') == 'NAME="Ubuntu"':
+                os_data.close()
+                return True
+        os_data.close()        
     return False
     
 # data paths on CC100
@@ -303,3 +305,10 @@ if osIsDocker():
     IN_VOLTAGE1_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage1_raw"
     CALIB_DATA = "/home/ea/cal/calib"
     OS_VERSION = "/etc/os-release"
+    
+SYSTEM_PATHS = [
+        CALIB_DATA, DIN, DOUT_DATA, IN_VOLTAGE0_RAW,
+        IN_VOLTAGE1_RAW, IN_VOLTAGE13_RAW, IN_VOLTAGE3_RAW,
+        OUT_VOLTAGE1_POWERDOWN, OUT_VOLTAGE1_RAW, OUT_VOLTAGE2_POWERDOWN,
+        OUT_VOLTAGE2_RAW, SERIAL_PORT
+]
