@@ -268,18 +268,6 @@ def calibrateTemp(value, input):
     #Return the calculated value in °C
     return (calcCalibrate(value, cal_Temp)-1000)/(3.91)
 
-def osIsDocker():
-    """Return True if the method is run by CC100Interface-Docker"""
-    if os.path.exists(OS_VERSION):
-        os_data = open(OS_VERSION, "r")
-        lines = os_data.readlines()
-        for line in lines:
-            if line.strip('\n') == 'NAME="Ubuntu"':
-                os_data.close()
-                return True
-        os_data.close()        
-    return False
-    
 # data paths on CC100
 DOUT_DATA = "/sys/kernel/dout_drv/DOUT_DATA"
 OUT_VOLTAGE1_POWERDOWN = "/sys/bus/iio/devices/iio:device0/out_voltage1_powerdown"
@@ -294,24 +282,3 @@ IN_VOLTAGE1_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage1_raw"
 CALIB_DATA = "/etc/calib"
 OS_VERSION = "/etc/os-release"
 SERIAL_PORT = "/dev/ttySTM1"
-if osIsDocker():
-    # data paths on the docker container
-    DOUT_DATA = "/home/ea/dout/DOUT_DATA"
-    OUT_VOLTAGE1_POWERDOWN = "/home/ea/anout/40017000.dac:dac@1/iio:device0/out_voltage1_powerdown"
-    OUT_VOLTAGE2_POWERDOWN = "/home/ea/anout/40017000.dac:dac@2/iio:device1/out_voltage2_powerdown"
-    OUT_VOLTAGE1_RAW = "/home/ea/anout/40017000.dac:dac@1/iio:device0/out_voltage1_raw"
-    OUT_VOLTAGE2_RAW = "/home/ea/anout/40017000.dac:dac@2/iio:device1/out_voltage2_raw"
-    DIN = "/home/ea/din/din"
-    IN_VOLTAGE3_RAW = "/home/ea/anin/48003000.adc:adc@100/iio:device3/in_voltage3_raw"
-    IN_VOLTAGE0_RAW = "/home/ea/anin/48003000.adc:adc@100/iio:device3/in_voltage0_raw"
-    IN_VOLTAGE13_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage13_raw"
-    IN_VOLTAGE1_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage1_raw"
-    CALIB_DATA = "/home/ea/cal/calib"
-    OS_VERSION = "/etc/os-release"
-    
-SYSTEM_PATHS = [
-        CALIB_DATA, DIN, DOUT_DATA, IN_VOLTAGE0_RAW,
-        IN_VOLTAGE1_RAW, IN_VOLTAGE13_RAW, IN_VOLTAGE3_RAW,
-        OUT_VOLTAGE1_POWERDOWN, OUT_VOLTAGE1_RAW, OUT_VOLTAGE2_POWERDOWN,
-        OUT_VOLTAGE2_RAW, SERIAL_PORT
-]
