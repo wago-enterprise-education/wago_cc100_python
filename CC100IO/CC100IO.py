@@ -35,6 +35,7 @@ def digitalWrite(output, value):
             currentValue = currentValue & ~mask
     else:
         logger.warning("Output does not exist")
+        return False
 
     # Writes the calculated value for the new configuration to the file on the CC100
     file = open(DOUT_DATA, "w")

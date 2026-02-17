@@ -12,9 +12,10 @@ setup(
   url = 'https://github.com/wago-enterprise-education/wago_cc100',   
   download_url = 'https://github.com/user/reponame/archive/v_01.tar.gz',    
   keywords = ['CC100IO'],   
-  install_requires=[
-      "pyfakefs >= 6.1.0"
-  ],
+  install_requires=[],
+  extras_require={
+      "dev": ["pyfakefs >= 6.1.0"],
+  }
   classifiers=[
     'Development Status :: 3 - Alpha',      
     'Intended Audience :: Developers',      

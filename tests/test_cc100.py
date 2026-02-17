@@ -1,9 +1,11 @@
+import os
+import unittest
+from unittest import mock
+
 from pyfakefs import fake_filesystem_unittest
 
-from CC100IO.CC100IO import SYSTEM_PATHS
-
 import CC100IO as cc
-import os
+from CC100IO.CC100IO import SYSTEM_PATHS
 
 TEST_CALIB_DATA = """PT1 PT2 AI1 AI2 A01 A02
 12452 1182 21785 1777
@@ -14,7 +16,7 @@ TEST_CALIB_DATA = """PT1 PT2 AI1 AI2 A01 A02
 1053 350 8966 3000
 """
 
-class Test_751_9301(fake_filesystem_unittest.TestCase):
+class Test_9301(fake_filesystem_unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.setUpClassPyfakefs()
@@ -34,14 +36,17 @@ class Test_751_9301(fake_filesystem_unittest.TestCase):
             cc.analogWrite(3,1000)
         self.assertEqual(cm.output, ["WARNING:CC100IO.CC100IO:Output does not exist"])
 
+    # Read from digital output file to control written value
+    @mock.patch("CC100IO.CC100IO.DIN", cc.CC100IO.DOUT_DATA)
     def test_digital_write(self):
         for i in range(1, 5):
             for j in range(2):
-                cc.digitalWrite(i,j)
+                self.assertTrue(cc.digitalWrite(i,j))
+                self.assertEqual(cc.digitalRead(i), j)
 
     def test_non_existing_input(self):
         with self.assertLogs(level="WARNING") as cm:
-                cc.digitalRead(9)
+                self.assertFalse(cc.digitalRead(9))
                 cc.analogRead(3)
         self.assertEqual(cm.output, ["WARNING:CC100IO:Input does not exist"])
               
@@ -50,27 +55,15 @@ class Test_751_9301(fake_filesystem_unittest.TestCase):
             cc.digitalRead(i)
 
     def test_analog_write(self):
-        for i in range(1,2):
+        for i in range(1,3):
             for j in range(0,10001,1000):
-                cc.analogWrite(i,j)
+                self.assertTrue(cc.analogWrite(i,j))
         
     def test_analog_read(self):
         for i in range(1,2):
             cc.analogRead(i)
         
-    def test_delay(self):
-        pass
-    
     def test_temp_read(self):
-        pass
-
-    def TestSerialReadLine(self):
-        pass
-
-    def test_serial_read_bytes(self):
-        pass
-
-    def test_serial_write(self):
         pass
 
     def test_read_calibration_data(self):
@@ -94,8 +87,5 @@ class Test_751_9301(fake_filesystem_unittest.TestCase):
     def TestCalibrateTemp(self):
         pass
 
-    def TestIsDocker(self):
-        pass
-
 if __name__ == '__main__':
-    fake_filesystem_unittest.main()
+    unittest.main()
