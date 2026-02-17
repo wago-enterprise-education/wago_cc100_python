@@ -17,7 +17,7 @@ def digitalWrite(output, value):
 
     output: Digital output to be switched
     value: Value which the selected output should be set to
-    Return True if value is written, False if an error occured
+    Return True if value is written, False if output does not exist.
     """
     # Read the current state to calculate the new value in the file
     file = open(DOUT_DATA, "r")
@@ -34,7 +34,7 @@ def digitalWrite(output, value):
         else:
             currentValue = currentValue & ~mask
     else:
-        logger.warning("Output does not exist")
+        logger.warning("Digital output does not exist")
         return False
 
     # Writes the calculated value for the new configuration to the file on the CC100
@@ -47,38 +47,37 @@ def digitalWrite(output, value):
 
 def analogWrite(output, voltage):
     """Switch the output to the specified voltage.
+
+    Return False if analog output does not exist,
+    else return True.
     
     output: Analog output to be switched
     voltage: Voltage which the selected output should be set to
     """
-    if (voltage>0 and voltage <10001):
+    if output == 1:
+        with open(OUT_VOLTAGE1_POWERDOWN, "w") as f:
+            f.write("0")
+
+        output_file = OUT_VOLTAGE1_RAW
+    elif output == 2:
+        with open(OUT_VOLTAGE2_POWERDOWN, "w") as f:
+            f.write("0")
+
+        output_file = OUT_VOLTAGE2_RAW
+    else:
+        logger.warning("Analog output does not exist")
+        return False
+
+    if (voltage > 0 and voltage < 10001):
         voltage = calibrateOut(voltage, output)
     if voltage < 0:
         voltage = 0
 
-    # Activate the analog outputs on the CC100
-    file = open(OUT_VOLTAGE1_POWERDOWN, "w")
-    file.write("0")
-    file.close()
-
-    file = open(OUT_VOLTAGE2_POWERDOWN, "w")
-    file.write("0")
-    file.close()
-
     # Write the voltage, taken from the calibration for the corresponding output,
     # for the voltage to the file for the output
     # When turning off, zero is written to the file
-    if output == 1:
-        file = open(OUT_VOLTAGE1_RAW, "w")
-        file.write(str(voltage))
-        file.close()
-
-    elif output == 2:
-        file=open(OUT_VOLTAGE2_RAW, "w")
-        file.write(str(voltage))
-        file.close()
-
-    else: logger.warning("Output does not exist")    
+    with open(output_file, "w") as f:
+        f.write(str(voltage))
     
     return True
 
@@ -87,11 +86,14 @@ def digitalRead(input):
 
     input: Digital input to be read
     """
+    if input not in range(1, 9):
+        logger.warning("Digital input does not exist")
+        return False
 
     # Read the state of the digital inputs on the CC100
-    datei = open (DIN, "r")
-    value = datei.readline()
-    datei.close()
+    file = open (DIN, "r")
+    value = file.readline()
+    file.close()
 
     # Format the current state into an 8-digit binary code
     value = int(value)
@@ -110,9 +112,14 @@ def digitalRead(input):
 def digitalReadWait(input, value):
     """Read specified input until desired state is reached, then return True.
 
+    Return False if digital input does not exist.
+
     input: Digital input to be checked
     value: State to be queried at the input
     """
+    if input not in range(1, 9):
+        logger.warning("Digital input does not exist")
+        return False
     value = int(value)
 
     # Check the input as long as it reaches the given state
@@ -125,14 +132,18 @@ def digitalReadWait(input, value):
 def analogRead(input):
     """Read analog input and return calibrated value in mV.
 
+    Return False if analog input does not exist.
+
     input: Analog input to be read
     """
-
     # Read the state of the analog input on the CC100
     if input == 1:
         path=IN_VOLTAGE3_RAW
     elif input == 2:
         path=IN_VOLTAGE0_RAW
+    else:
+        logger.warning("Analog input does not exist")
+        return False
 
     file = open(path, "r")
     voltage = int(file.readline())
@@ -282,3 +293,10 @@ IN_VOLTAGE1_RAW = "/sys/bus/iio/devices/iio:device2/in_voltage1_raw"
 CALIB_DATA = "/etc/calib"
 OS_VERSION = "/etc/os-release"
 SERIAL_PORT = "/dev/ttySTM1"
+
+SYSTEM_PATHS = [
+        CALIB_DATA, DIN, DOUT_DATA, IN_VOLTAGE0_RAW,
+        IN_VOLTAGE1_RAW, IN_VOLTAGE13_RAW, IN_VOLTAGE3_RAW,
+        OUT_VOLTAGE1_POWERDOWN, OUT_VOLTAGE1_RAW, OUT_VOLTAGE2_POWERDOWN,
+        OUT_VOLTAGE2_RAW, SERIAL_PORT
+]

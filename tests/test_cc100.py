@@ -32,9 +32,15 @@ class Test_9301(fake_filesystem_unittest.TestCase):
 
     def test_non_existing_output(self):
         with self.assertLogs(level="WARNING") as cm:
-            cc.digitalWrite(5, True)
-            cc.analogWrite(3,1000)
-        self.assertEqual(cm.output, ["WARNING:CC100IO.CC100IO:Output does not exist"])
+            self.assertFalse(cc.digitalWrite(5, True))
+            self.assertFalse(cc.analogWrite(3, 1000))
+        self.assertEqual(
+            cm.output,
+            [
+                "WARNING:CC100IO.CC100IO:Digital output does not exist",
+                "WARNING:CC100IO.CC100IO:Analog output does not exist"
+            ]
+        )
 
     # Read from digital output file to control written value
     @mock.patch("CC100IO.CC100IO.DIN", cc.CC100IO.DOUT_DATA)
@@ -47,8 +53,14 @@ class Test_9301(fake_filesystem_unittest.TestCase):
     def test_non_existing_input(self):
         with self.assertLogs(level="WARNING") as cm:
                 self.assertFalse(cc.digitalRead(9))
-                cc.analogRead(3)
-        self.assertEqual(cm.output, ["WARNING:CC100IO:Input does not exist"])
+                self.assertFalse(cc.analogRead(3))
+        self.assertEqual(
+            cm.output,
+            [
+                "WARNING:CC100IO.CC100IO:Digital input does not exist",
+                "WARNING:CC100IO.CC100IO:Analog input does not exist"
+            ]
+        )
               
     def test_digital_read(self):
         for i in range(1,9):
